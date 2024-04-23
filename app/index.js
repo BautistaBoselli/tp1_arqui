@@ -10,6 +10,7 @@ app.get("/dictionary", async (req, res) => {
   const word = req.query.word;
   if (!word) {
     res.status(400).send("Please provide a word");
+    return;
   }
   try {
     const aux = await fetch(
