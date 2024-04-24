@@ -1,9 +1,9 @@
-const express = require("express");
-const getDictionary = require("../servicies/dictionary");
-const getSpaceflightNews = require("../servicies/spaceflight");
-const getQuote = require("../servicies/quotes");
+import { Router } from "express";
+import { getDictionary } from "../servicies/dictionary.js";
+import { getQuote } from "../servicies/quotes.js";
+import { getSpaceflightNews } from "../servicies/spaceflight.js";
 
-const base = express.Router();
+const base = Router();
 
 base.get("/ping", (req, res) => {
   res.send("Pong!");
@@ -38,4 +38,4 @@ base.get("/quote", async (req, res) => {
   }
 });
 
-module.exports = base;
+export default base;

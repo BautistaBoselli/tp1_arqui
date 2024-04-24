@@ -1,6 +1,6 @@
-const HttpError = require("../utils/http-error");
+import { HttpError } from "../utils/http-error.js";
 
-async function getSpaceflightNews() {
+export async function getSpaceflightNews() {
   try {
     const aux = await fetch(`https://api.spaceflightnewsapi.net/v4/articles/?limit=5`);
     const data = await aux.json();
@@ -11,5 +11,3 @@ async function getSpaceflightNews() {
     throw new HttpError("Could not get latests news", 500);
   }
 }
-
-module.exports = getSpaceflightNews;

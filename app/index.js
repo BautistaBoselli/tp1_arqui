@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
 
-const baseRouter = require("./tactics/base");
-const cacheRouter = require("./tactics/cache");
-const rateLimitingRouter = require("./tactics/rate-limiting");
+import baseRouter from "./tactics/base.js";
+import cacheRouter from "./tactics/cache.js";
+import rateLimitingRouter from "./tactics/rate-limiting.js";
 
 const app = express();
 

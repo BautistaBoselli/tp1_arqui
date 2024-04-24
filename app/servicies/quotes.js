@@ -1,6 +1,6 @@
-const HttpError = require("../utils/http-error");
+import { HttpError } from "../utils/http-error.js";
 
-async function getQuote() {
+export async function getQuote() {
   try {
     const aux = await fetch(`https://api.quotable.io/quotes/random`);
     const data = await aux.json();
@@ -12,5 +12,3 @@ async function getQuote() {
     throw new HttpError("Could not get latests news", 500);
   }
 }
-
-module.exports = getQuote;

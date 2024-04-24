@@ -1,6 +1,6 @@
-const HttpError = require("../utils/http-error");
+import { HttpError } from "../utils/http-error.js";
 
-async function getDictionary(word) {
+export async function getDictionary(word) {
   if (!word) {
     throw new HttpError("Please provide a word", 400);
   }
@@ -25,5 +25,3 @@ async function getDictionary(word) {
 
   return wordInfo;
 }
-
-module.exports = getDictionary;
