@@ -6,9 +6,7 @@ import rateLimitingRouter from "./tactics/rate-limiting.js";
 
 const app = express();
 
-app.use("/base", baseRouter);
-app.use("/cache", cacheRouter);
-app.use("/rate-limiting", rateLimitingRouter);
+app.use("/", baseRouter);
 
 app.listen(3000, () => {
   console.log(`Server is running on port 3000`);
