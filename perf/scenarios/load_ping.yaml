@@ -1,7 +1,7 @@
 config:
   environments:
     api:
-      target: "http://localhost:5555/api"
+      target: "http://localhost:5555"
       plugins:
         statsd:
           host: localhost
@@ -11,16 +11,19 @@ config:
   pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
 
   phases:
+    - name: Warm up
+      duration: 30
+      arrivalRate: 5
     - name: Ramp
       duration: 30
-      arrivalRate: 1
-      rampTo: 5
+      arrivalRate: 10
+      rampTo: 50
     - name: Plain
       duration: 60
-      arrivalRate: 5
+      arrivalRate: 50
 
 scenarios:
-  - name: Root (/)
+  - name: Load (/ping)
     flow:
       - get:
-          url: "/base/ping"
+          url: "/ping"
