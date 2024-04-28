@@ -2,6 +2,7 @@ import { Router } from "express";
 import { getDictionary } from "../servicies/dictionary.js";
 import { getQuote } from "../servicies/quotes.js";
 import { getSpaceflightNews } from "../servicies/spaceflight.js";
+import { metrics } from "../utils/metrics.js";
 
 const base = Router();
 
@@ -10,6 +11,7 @@ base.get("/ping", (req, res) => {
 });
 
 base.get("/dictionary", async (req, res) => {
+  const start = process.hrtime.bigint();
   const word = req.query.word;
 
   try {
@@ -18,6 +20,10 @@ base.get("/dictionary", async (req, res) => {
   } catch (err) {
     res.status(err.statusCode).send(err.message);
   }
+
+  const completeTime = process.hrtime.bigint(start);
+  console.log(completeTime);
+  metrics.gauge("complete_time", completeTime);
 });
 
 base.get("/spaceflight_news", async (req, res) => {
