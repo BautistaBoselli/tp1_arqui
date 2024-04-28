@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getDictionary } from "../servicies/dictionary.js";
-import { getQuote } from "../servicies/quotes.js";
+import { getQuotes } from "../servicies/quotes.js";
 import { getSpaceflightNews } from "../servicies/spaceflight.js";
 import { measureExecution, metrics } from "../utils/metrics.js";
 
@@ -39,7 +39,7 @@ base.get("/spaceflight_news", (req, res) => {
 base.get("/quote", (req, res) => {
   measureExecution("complete_time", async () => {
     try {
-      const quote = await getQuote();
+      const [quote] = await getQuotes();
       res.json(quote);
     } catch (err) {
       res.status(err.statusCode).send(err.message);
