@@ -23,7 +23,7 @@ config:
       arrivalRate: 50
 
 scenarios:
-  - name: Load (/ping)
+  - name: Load (/dictionary with only 'banana')
     flow:
       - get:
-          url: "/ping"
+          url: "/dictionary?word=banana"
