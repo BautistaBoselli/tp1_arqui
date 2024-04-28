@@ -1,4 +1,5 @@
 import { HttpError } from "../utils/http-error.js";
+import { measureExecution } from "../utils/metrics.js";
 
 export async function getDictionary(word) {
   if (!word) {
@@ -7,8 +8,10 @@ export async function getDictionary(word) {
 
   let data;
   try {
-    const aux = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-    data = await aux.json();
+    data = await measureExecution("external_api_time", async () => {
+      const aux = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+      return await aux.json();
+    });
   } catch (err) {
     throw new HttpError("Could not get word meaning", 500);
   }

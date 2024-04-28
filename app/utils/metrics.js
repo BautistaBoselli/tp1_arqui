@@ -9,3 +9,16 @@ export const metrics = new StatsD({
     console.error(error);
   },
 });
+
+export async function measureExecution(metricName, cb) {
+  const start = process.hrtime.bigint();
+  try {
+    const result = await cb();
+    return result;
+  } catch (error) {
+    throw error;
+  } finally {
+    const end = process.hrtime.bigint();
+    metrics.gauge(metricName, Number(end - start) / 1_000_000);
+  }
+}
