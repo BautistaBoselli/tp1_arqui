@@ -12,18 +12,30 @@ config:
 
   phases:
     - name: Warm up
-      duration: 30
-      arrivalRate: 10
+      duration: 20
+      arrivalRate: 1
     - name: Ramp
+      duration: 60
+      arrivalRate: 1
+      rampTo: 5
+    - name: Plain
+      duration: 30
+      arrivalRate: 5
+    - name: Ramp
+      duration: 60
+      arrivalRate: 5
+      rampTo: 10
+    - name: Plain
       duration: 30
       arrivalRate: 10
-      rampTo: 30
-    - name: Plain
-      duration: 60
-      arrivalRate: 30
+
+  payload:
+    path: "../datasets/words.csv"
+    fields:
+      - "words"
 
 scenarios:
-  - name: Load (/spaceflight_news)
+  - name: Load and Stress (/dictionary)
     flow:
       - get:
-          url: "/spaceflight_news"
+          url: "/dictionary?word={{words}}"
