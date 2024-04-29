@@ -5,6 +5,9 @@ export async function getQuotes(numberOfQuotes = 1) {
   try {
     const data = await measureExecution("external_api_time", async () => {
       const aux = await fetch(`https://api.quotable.io/quotes/random?limit=${numberOfQuotes}`);
+      if (!aux.ok) {
+        throw new HttpError("Could not get quotes", aux.status);
+      }
       const data = await aux.json();
       return data;
     });
@@ -14,6 +17,6 @@ export async function getQuotes(numberOfQuotes = 1) {
     }));
   } catch (err) {
     console.log(err);
-    throw new HttpError("Could not get latests news", 500);
+    throw new HttpError("Could not get quotes", 500);
   }
 }

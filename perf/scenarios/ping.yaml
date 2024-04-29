@@ -12,15 +12,26 @@ config:
 
   phases:
     - name: Warm up
-      duration: 30
-      arrivalRate: 5
+      duration: 20
+      arrivalRate: 10
     - name: Ramp
-      duration: 30
+      duration: 60
       arrivalRate: 10
       rampTo: 50
-    - name: Plain
+    - name: Load
+      duration: 30
+      arrivalRate: 50
+    - name: Ramp
       duration: 60
       arrivalRate: 50
+      rampTo: 100
+    - name: Load
+      duration: 30
+      arrivalRate: 100
+    - name: Ramp
+      duration: 60
+      arrivalRate: 100
+      rampTo: 150
 
 scenarios:
   - name: Load (/ping)

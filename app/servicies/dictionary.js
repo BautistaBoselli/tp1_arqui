@@ -10,6 +10,9 @@ export async function getDictionary(word) {
   try {
     data = await measureExecution("external_api_time", async () => {
       const aux = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+      if (!aux.ok) {
+        throw new HttpError("Could not get word meaning", aux.status);
+      }
       return await aux.json();
     });
   } catch (err) {
