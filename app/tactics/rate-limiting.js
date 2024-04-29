@@ -2,11 +2,12 @@ import { Router } from "express";
 import { getDictionary } from "../servicies/dictionary.js";
 import { getQuotes } from "../servicies/quotes.js";
 import { getSpaceflightNews } from "../servicies/spaceflight.js";
-import { measureExecution, metrics } from "../utils/metrics.js";
+import { measureExecution } from "../utils/metrics.js";
+import { limiter } from "../utils/limiter.js";
 
 const base = Router();
 
-base.get("/ping", (req, res) => {
+base.get("/ping", limiter(800), (req, res) => {
   measureExecution("complete_time", async () => {
     res.send("Pong!");
   });
