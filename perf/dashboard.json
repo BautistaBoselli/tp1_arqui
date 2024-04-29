@@ -153,7 +153,7 @@
             "uid": "${DS_GRAPHITE}"
           },
           "refId": "A",
-          "target": "aliasByNode(transformNull(stats.gauges.myapp.*, 0), 3)"
+          "target": "aliasByNode(stats.gauges.myapp.*, 3)"
         }
       ],
       "title": "Complete Time (ms)",
@@ -253,7 +253,7 @@
             "uid": "${DS_GRAPHITE}"
           },
           "refId": "A",
-          "target": "aliasByNode(transformNull(scale(stats.gauges.$server.scenarioCounts.*, 0.1), 0), 4)"
+          "target": "aliasByNode(scale(stats.gauges.$server.scenarioCounts.*, 0.1), 4)"
         }
       ],
       "title": "Scenarios Lauched",
@@ -385,7 +385,7 @@
           "hide": false,
           "refCount": 0,
           "refId": "B",
-          "target": "alias(transformNull(scale(stats.gauges.$server.codes.200, 0.1), 0), 'Completed')",
+          "target": "alias(scale(stats.gauges.$server.codes.200, 0.1), 'Completed')",
           "textEditor": false
         },
         {
@@ -396,7 +396,7 @@
           "hide": false,
           "refCount": 0,
           "refId": "A",
-          "target": "alias(transformNull(scale(stats.gauges.$server.errors.ECONNRESET, 0.1), 0), 'Error Conection Reset')",
+          "target": "alias(scale(stats.gauges.$server.errors.ECONNRESET, 0.1), 'Error Conection Reset')",
           "textEditor": false
         },
         {
@@ -407,7 +407,7 @@
           "hide": false,
           "refCount": 0,
           "refId": "C",
-          "target": "alias(transformNull(scale(stats.gauges.$server.pendingRequests, 0.1), 0), 'Pending')",
+          "target": "alias(scale(stats.gauges.$server.pendingRequests, 0.1), 'Pending')",
           "textEditor": false
         },
         {
@@ -418,7 +418,7 @@
           "hide": false,
           "refCount": 0,
           "refId": "D",
-          "target": "alias(transformNull(scale(stats.gauges.$server.codes.429, 0.1), 0), 'Limited')",
+          "target": "alias(scale(stats.gauges.$server.codes.429, 0.1), 'Limited')",
           "textEditor": false
         },
         {
@@ -429,7 +429,7 @@
           "hide": false,
           "refCount": 0,
           "refId": "F",
-          "target": "alias(transformNull(scale(stats.gauges.$server.errors.ETIMEDOUT, 0.1), 0), 'Error Timeout')",
+          "target": "alias(scale(stats.gauges.$server.errors.ETIMEDOUT, 0.1), 'Error Timeout')",
           "textEditor": false
         },
         {
@@ -440,7 +440,7 @@
           "hide": false,
           "refCount": 0,
           "refId": "E",
-          "target": "alias(transformNull(scale(stats.gauges.$server.codes.500, 0.1), 0), 'Error external API')"
+          "target": "alias(scale(stats.gauges.$server.codes.500, 0.1), 'Error external API')"
         }
       ],
       "title": "Requests States",
@@ -788,7 +788,7 @@
       }
     }
   ],
-  "refresh": "",
+  "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -901,6 +901,6 @@
   "timezone": "",
   "title": "Main dashboard",
   "uid": "arxIPammk",
-  "version": 24,
+  "version": 30,
   "weekStart": ""
 }
