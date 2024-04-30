@@ -13,6 +13,7 @@ base.get("/ping", (req, res) => {
   });
 });
 
+// This endpoint is only for resetting the Redis cache and testing its functionality, it is not used in the tests
 base.get("/reset-cache", async (req, res) => {
   await redis.flushAll();
   res.json({ success: true });
@@ -39,6 +40,7 @@ base.get("/dictionary", (req, res) => {
   });
 });
 
+// This value is in seconds
 const TITLES_CACHE_EXPIRATION = 30;
 
 base.get("/spaceflight_news", (req, res) => {
@@ -52,7 +54,9 @@ base.get("/spaceflight_news", (req, res) => {
 
     try {
       const titles = await getSpaceflightNews();
-      await redis.set("spaceflight_news", JSON.stringify(titles), { EX: TITLES_CACHE_EXPIRATION });
+      await redis.set("spaceflight_news", JSON.stringify(titles), {
+        EX: TITLES_CACHE_EXPIRATION,
+      });
       res.json(titles);
     } catch (err) {
       res.status(err.statusCode).send(err.message);
