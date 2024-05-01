@@ -132,14 +132,14 @@
       "options": {
         "legend": {
           "calcs": [
-            "min",
             "max",
+            "last",
             "mean"
           ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "width": 275
+          "width": 400
         },
         "tooltip": {
           "mode": "single",
@@ -156,7 +156,7 @@
           "target": "aliasByNode(stats.gauges.myapp.*, 3)"
         }
       ],
-      "title": "Complete Time (ms)",
+      "title": "Endpoint's Delay (ms)",
       "type": "timeseries"
     },
     {
@@ -232,14 +232,14 @@
       "options": {
         "legend": {
           "calcs": [
-            "min",
             "max",
+            "last",
             "mean"
           ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "width": 275
+          "width": 400
         },
         "tooltip": {
           "mode": "single",
@@ -363,13 +363,14 @@
       "options": {
         "legend": {
           "calcs": [
-            "mean",
-            "max"
+            "max",
+            "last",
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "width": 275
+          "width": 400
         },
         "tooltip": {
           "mode": "single",
@@ -447,6 +448,119 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "graphite",
+        "uid": "${DS_GRAPHITE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Requests Read / s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 40,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "last",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "width": 400
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "${DS_GRAPHITE}"
+          },
+          "refCount": 0,
+          "refId": "A",
+          "target": "alias(stats.gauges.$server.scenarioDuration.max, 'Upper')",
+          "textEditor": true
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "${DS_GRAPHITE}"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "B",
+          "target": "alias(stats.gauges.$server.scenarioDuration.median, 'Median')",
+          "textEditor": true
+        }
+      ],
+      "title": "Response time (client-side)",
+      "type": "timeseries"
+    },
+    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -461,7 +575,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 32
       },
       "height": "250px",
       "hiddenSeries": false,
@@ -570,7 +684,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 39
       },
       "height": "250",
       "hiddenSeries": false,
@@ -692,7 +806,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 46
       },
       "height": "250px",
       "hiddenSeries": false,
@@ -870,7 +984,7 @@
     ]
   },
   "time": {
-    "from": "now-3m",
+    "from": "now-8m",
     "to": "now"
   },
   "timepicker": {
@@ -901,6 +1015,6 @@
   "timezone": "",
   "title": "Main dashboard",
   "uid": "arxIPammk",
-  "version": 30,
+  "version": 20,
   "weekStart": ""
 }

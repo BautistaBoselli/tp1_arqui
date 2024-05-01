@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getDictionary } from "../servicies/dictionary.js";
 import { getSpaceflightNews } from "../servicies/spaceflight.js";
-import { getQuote } from "../servicies/quotes.js";
+import { getQuotes } from "../servicies/quotes.js";
 
 const base = Router();
 
@@ -40,7 +40,7 @@ base.get("/spaceflight_news", async (req, res) => {
 
 base.get("/quote", async (req, res) => {
   try {
-    const quote = await getQuote();
+    const [quote] = await getQuotes();
     res.json(quote);
   } catch (err) {
     res.status(err.statusCode).send(err.message);
