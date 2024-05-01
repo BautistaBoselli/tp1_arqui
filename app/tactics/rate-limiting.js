@@ -13,7 +13,8 @@ base.get("/ping", limiter(800), (req, res) => {
   });
 });
 
-base.get("/dictionary", (req, res) => {
+const DICTIONARY_LIMIT_PER_10s = 15;
+base.get("/dictionary", limiter(DICTIONARY_LIMIT_PER_10s), (req, res) => {
   measureExecution("complete_time", async () => {
     const word = req.query.word;
 
