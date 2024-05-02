@@ -4,6 +4,7 @@ import { getQuotes } from "../servicies/quotes.js";
 import { getSpaceflightNews } from "../servicies/spaceflight.js";
 import { measureExecution } from "../utils/metrics.js";
 import { redis } from "../utils/redis.js";
+import { limiter } from "../utils/limiter.js";
 
 const base = Router();
 
@@ -19,7 +20,8 @@ base.get("/reset-cache", async (req, res) => {
   res.json({ success: true });
 });
 
-base.get("/dictionary", (req, res) => {
+const DICTIONARY_LIMIT_PER_10s = 100;
+base.get("/dictionary", limiter(DICTIONARY_LIMIT_PER_10s), (req, res) => {
   measureExecution("complete_time", async () => {
     const word = req.query.word;
 
@@ -42,8 +44,8 @@ base.get("/dictionary", (req, res) => {
 
 // This value is in seconds
 const TITLES_CACHE_EXPIRATION = 30;
-
-base.get("/spaceflight_news", (req, res) => {
+const SPACE_LIMIT_PER_10s = 500;
+base.get("/spaceflight_news", limiter(SPACE_LIMIT_PER_10s), (req, res) => {
   measureExecution("complete_time", async () => {
     const cachedValue = await redis.getJson("spaceflight_news");
 
@@ -64,16 +66,16 @@ base.get("/spaceflight_news", (req, res) => {
   });
 });
 
-const PRECACHED_QUOTES = 10;
-
-base.get("/quote", async (req, res) => {
+const PRECACHED_QUOTES = 15;
+const QUOTE_LIMIT_PER_10s = 150;
+base.get("/quote", limiter(QUOTE_LIMIT_PER_10s), async (req, res) => {
   let needActivePopulation = false;
 
   await measureExecution("complete_time", async () => {
     let cachedQuotes = await redis.getJson("quotes");
 
     // If there are no quotes in the cache, we fetch a new batch of quotes, if that fails we return an error
-    if (cachedQuotes.length === 0) {
+    if (!cachedQuotes || cachedQuotes.length === 0) {
       try {
         cachedQuotes = await getQuotes(PRECACHED_QUOTES + 1);
       } catch (err) {

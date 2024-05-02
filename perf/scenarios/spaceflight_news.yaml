@@ -1,0 +1,56 @@
+config:
+  environments:
+    api:
+      target: "http://localhost:5555/api"
+      plugins:
+        statsd:
+          host: localhost
+          port: 8125
+          prefix: "artillery-api"
+
+  pool: 50 # All HTTP requests from all virtual users will be sent over the same connections
+
+  phases:
+    - name: Warm up
+      duration: 30
+      arrivalRate: 1
+      # 00:30
+
+    - name: Ramp
+      duration: 60
+      arrivalRate: 1
+      rampTo: 15
+    - name: Plain
+      duration: 60
+      arrivalRate: 15
+      # 2:30
+
+    - name: Ramp
+      duration: 60
+      arrivalRate: 15
+      rampTo: 30
+    - name: Plain
+      duration: 60
+      arrivalRate: 30
+      # 4:30
+
+    - name: Ramp
+      duration: 60
+      arrivalRate: 30
+      rampTo: 50
+    - name: Plain
+      duration: 60
+      arrivalRate: 50
+      # 6:30
+
+    - name: Spike
+      duration: 60
+      arrivalRate: 50
+      rampTo: 150
+      # 7:30
+
+scenarios:
+  - name: Load (/spaceflight_news)
+    flow:
+      - get:
+          url: "/spaceflight_news"
