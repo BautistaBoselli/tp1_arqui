@@ -23,16 +23,16 @@ base.get("/dictionary", (req, res) => {
   measureExecution("complete_time", async () => {
     const word = req.query.word;
 
-    const cachedValue = await redis.get("dictionary/" + word);
+    const cachedValue = await redis.getJson("dictionary/" + word);
 
     if (cachedValue) {
-      res.json(JSON.parse(cachedValue));
+      res.json(cachedValue);
       return;
     }
 
     try {
       const wordInfo = await getDictionary(word);
-      await redis.set("dictionary/" + word, JSON.stringify(wordInfo));
+      await redis.setJson("dictionary/" + word, wordInfo);
       res.json(wordInfo);
     } catch (err) {
       res.status(err.statusCode).send(err.message);
@@ -45,16 +45,16 @@ const TITLES_CACHE_EXPIRATION = 30;
 
 base.get("/spaceflight_news", (req, res) => {
   measureExecution("complete_time", async () => {
-    const cachedValue = await redis.get("spaceflight_news");
+    const cachedValue = await redis.getJson("spaceflight_news");
 
     if (cachedValue) {
-      res.json(JSON.parse(cachedValue));
+      res.json(cachedValue);
       return;
     }
 
     try {
       const titles = await getSpaceflightNews();
-      await redis.set("spaceflight_news", JSON.stringify(titles), {
+      await redis.setJson("spaceflight_news", titles, {
         EX: TITLES_CACHE_EXPIRATION,
       });
       res.json(titles);
@@ -68,7 +68,7 @@ const PRECACHED_QUOTES = 5;
 
 base.get("/quote", (req, res) => {
   measureExecution("complete_time", async () => {
-    let cachedQuotes = JSON.parse((await redis.get("quotes")) ?? "[]");
+    let cachedQuotes = await redis.getJson("quotes");
 
     // If there are no quotes in the cache, we fetch a new batch of quotes, if that fails we return an error
     if (cachedQuotes.length === 0) {
@@ -80,14 +80,14 @@ base.get("/quote", (req, res) => {
     }
 
     const quote = cachedQuotes.pop();
-    await redis.set("quotes", JSON.stringify(cachedQuotes));
+    await redis.setJson("quotes", cachedQuotes);
     res.json(quote);
 
     // If after returning a quote we run out of quotes, we fetch a new batch of quotes and store them in the cache
     if (cachedQuotes.length === 0) {
       try {
         cachedQuotes = await getQuotes(PRECACHED_QUOTES);
-        await redis.set("quotes", JSON.stringify(cachedQuotes));
+        await redis.setJson("quotes", cachedQuotes);
       } catch (err) {
         return;
       }
