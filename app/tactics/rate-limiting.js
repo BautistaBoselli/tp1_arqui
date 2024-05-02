@@ -39,7 +39,8 @@ base.get("/spaceflight_news", limiter(SPACE_LIMIT_PER_10s), (req, res) => {
   });
 });
 
-base.get("/quote", (req, res) => {
+const QUOTE_LIMIT_PER_10s = 30;
+base.get("/quote", limiter(QUOTE_LIMIT_PER_10s), (req, res) => {
   measureExecution("complete_time", async () => {
     try {
       const [quote] = await getQuotes();
