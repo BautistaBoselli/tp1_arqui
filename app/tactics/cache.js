@@ -64,7 +64,7 @@ base.get("/spaceflight_news", (req, res) => {
   });
 });
 
-const PRECACHED_QUOTES = 5;
+const PRECACHED_QUOTES = 10;
 
 base.get("/quote", (req, res) => {
   measureExecution("complete_time", async () => {
