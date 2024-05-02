@@ -27,7 +27,8 @@ base.get("/dictionary", limiter(DICTIONARY_LIMIT_PER_10s), (req, res) => {
   });
 });
 
-base.get("/spaceflight_news", (req, res) => {
+const SPACE_LIMIT_PER_10s = 250;
+base.get("/spaceflight_news", limiter(SPACE_LIMIT_PER_10s), (req, res) => {
   measureExecution("complete_time", async () => {
     try {
       const titles = await getSpaceflightNews();
