@@ -66,8 +66,10 @@ base.get("/spaceflight_news", (req, res) => {
 
 const PRECACHED_QUOTES = 10;
 
-base.get("/quote", (req, res) => {
-  measureExecution("complete_time", async () => {
+base.get("/quote", async (req, res) => {
+  let needActivePopulation = false;
+
+  await measureExecution("complete_time", async () => {
     let cachedQuotes = await redis.getJson("quotes");
 
     // If there are no quotes in the cache, we fetch a new batch of quotes, if that fails we return an error
@@ -82,19 +84,19 @@ base.get("/quote", (req, res) => {
     const quote = cachedQuotes.pop();
     await redis.setJson("quotes", cachedQuotes);
     res.json(quote);
-
-    // If after returning a quote we run out of quotes, we fetch a new batch of quotes and store them in the cache
-    if (cachedQuotes.length === 0) {
-      try {
-        cachedQuotes = await getQuotes(PRECACHED_QUOTES);
-        await redis.setJson("quotes", cachedQuotes);
-      } catch (err) {
-        return;
-      }
-    }
-
-    // We store the updated list of quotes in the cache for future requests
+    needActivePopulation = cachedQuotes.length === 0;
   });
+
+  // If after returning a quote we run out of quotes, we fetch a new batch of quotes and store them in the cache
+  if (needActivePopulation) {
+    try {
+      cachedQuotes = await getQuotes(PRECACHED_QUOTES);
+      // We store the updated list of quotes in the cache for future requests
+      await redis.setJson("quotes", cachedQuotes);
+    } catch (err) {
+      return;
+    }
+  }
 });
 
 export default base;
