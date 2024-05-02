@@ -50,7 +50,7 @@ config:
       # 7:30
 
   payload:
-    path: "../datasets/words.csv"
+    path: "../datasets/500_words.csv"
     fields:
       - "words"
 
